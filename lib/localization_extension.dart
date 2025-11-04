@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_translation_mapper/app_localization_provider.dart';
 import 'custom_localization.dart';
 
-extension LocalizationExtension on BuildContext {
+extension LocalizationExtension<T> on BuildContext {
   /// Access AppLocalizations for type-safe translations
-  /// Usage: `context.loc.welcomeToPimpay`
-  dynamic get loc {
-    return LocalizationProvider.getLocalizations(this);
+  /// Usage: `context.loc.welcome`
+  T get loc {
+    return LocalizationProvider.getLocalizations<T>(this);
   }
 
   /// Access translations by key using CustomLocalization

@@ -31,19 +31,19 @@ Run `flutter pub get` to fetch the package.
 
 ### 2. Set Up the `LocalizationProvider`
 
-To make the package project-agnostic, you need to set the `LocalizationProvider` in your app. This allows the package to access your app's `AppLocalizations` class.
+To make the package project-agnostic, you need to set the `LocalizationProvider` in your app. This allows the package to access your app's `AppLocalizations` class with full type safety.
 
 In your `main.dart`:
 
 ```dart
 import 'package:flutter/material.dart';
-import 'package:flutter_translation_mapper/localization_provider.dart';
+import 'package:flutter_translation_mapper/app_localization_provider.dart';
 import 'package:your_project_name/l10n/app_localizations.dart';
 
 void main() {
-  // Set the AppLocalizations provider
-  LocalizationProvider.setProvider((BuildContext context) {
-    return AppLocalizations.of(context);
+  // Set the AppLocalizations provider with type parameter
+  LocalizationProvider.setProvider<AppLocalizations>((BuildContext context) {
+    return AppLocalizations.of(context)!;
   });
 
   // Set the supported locales
@@ -52,6 +52,9 @@ void main() {
     Locale('es'),
     Locale('fr'),
   ]);
+
+  //or
+  LocalizationProvider.setSupportedLocales(AppLocalizations.supportedLocales);
 
   runApp(MyApp());
 }
@@ -102,7 +105,7 @@ Each file should contain key-value pairs for translations:
 
 #### Using the `loc` Extension
 
-The package provides an extension on `BuildContext` to simplify accessing translations. For example:
+The package provides an extension on `BuildContext` to simplify accessing translations with full type safety and autocomplete support. For example:
 
 ```dart
 Text(context.loc.welcomeMessage);
@@ -124,9 +127,10 @@ If the key is not found, the package will return `??:key` as a fallback.
 
 When working with localization in Flutter, it can be cumbersome to use translation keys directly to fetch translations. This package solves that problem by:
 
-1. Providing a project-agnostic way to integrate your localization logic.
-2. Adding an extension to make accessing localization values simpler.
+1. Providing a project-agnostic way to integrate your localization logic with full type safety.
+2. Adding an extension to make accessing localization values simpler with autocomplete support.
 3. Supporting custom localization for dynamic translations.
+4. Using generics to ensure type safety and IDE autocomplete for all your translation keys.
 
 ---
 
