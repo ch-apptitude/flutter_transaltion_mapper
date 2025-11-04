@@ -42,7 +42,7 @@ class CustomLocalizationDelegate
     extends LocalizationsDelegate<CustomLocalization> {
   @override
   bool isSupported(Locale locale) =>
-      LocalizationProvider.supportedLocales.contains(locale);
+      TranslationMapper.supportedLocales.contains(locale);
 
   @override
   bool shouldReload(CustomLocalizationDelegate old) => false;

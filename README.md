@@ -1,10 +1,9 @@
 # Flutter Translation Mapper
 
-A Flutter package designed to simplify localization by providing a project-agnostic solution for managing translations. This package allows you to use translation keys to fetch localized values and includes an extension for easier access to localization values. It also supports custom localization for dynamic translations.
+A Flutter package designed to simplify localization by providing a solution for managing custom translations with variable support. This package allows you to use translation keys to fetch localized values with dynamic variable replacements.
 
 ## Features
 
-- **Project-Agnostic Localization**: Easily integrate your own `AppLocalizations` class.
 - **Key-Based Translations**: Use translation keys to fetch localized values.
 - **Simplified Access**: Access translations directly using an extension on `BuildContext`.
 - **Custom Localization**: Supports dynamic translations with simple variable replacements.
@@ -29,32 +28,21 @@ Run `flutter pub get` to fetch the package.
 
 ---
 
-### 2. Set Up the `LocalizationProvider`
+### 2. Set Up the Supported Locales
 
-To make the package project-agnostic, you need to set the `LocalizationProvider` in your app. This allows the package to access your app's `AppLocalizations` class with full type safety.
-
-In your `main.dart`:
+In your `main.dart`, configure the supported locales:
 
 ```dart
 import 'package:flutter/material.dart';
 import 'package:flutter_translation_mapper/app_localization_provider.dart';
-import 'package:your_project_name/l10n/app_localizations.dart';
 
 void main() {
-  // Set the AppLocalizations provider with type parameter
-  LocalizationProvider.setProvider<AppLocalizations>((BuildContext context) {
-    return AppLocalizations.of(context)!;
-  });
-
   // Set the supported locales
-  LocalizationProvider.setSupportedLocales([
+  TranslationMapper.setSupportedLocales([
     Locale('en'),
     Locale('es'),
     Locale('fr'),
   ]);
-
-  //or
-  LocalizationProvider.setSupportedLocales(AppLocalizations.supportedLocales);
 
   runApp(MyApp());
 }
@@ -76,7 +64,7 @@ MaterialApp(
     CustomLocalization.delegate,
     // Add other delegates like AppLocalizations.delegate
   ],
-  supportedLocales: LocalizationProvider.supportedLocales,
+  supportedLocales: TranslationMapper.supportedLocales,
   home: MyHomePage(),
 );
 ```
@@ -103,19 +91,13 @@ Each file should contain key-value pairs for translations:
 
 ### 5. Access Translations in Your App
 
-#### Using the `loc` Extension
-
-The package provides an extension on `BuildContext` to simplify accessing translations with full type safety and autocomplete support. For example:
+Use the `translate` method for translations with or without variables:
 
 ```dart
-Text(context.loc.welcomeMessage);
-```
+// Simple translation
+Text(context.translate('welcomeMessage'));
 
-#### Using Custom Localization
-
-For dynamic translations with variables, use the `translate` method:
-
-```dart
+// Translation with variables
 Text(context.translate('greeting', params: {'name': 'John'}));
 ```
 
@@ -123,20 +105,41 @@ If the key is not found, the package will return `??:key` as a fallback.
 
 ---
 
+## Optional: Add a Convenience Extension for AppLocalizations
+
+If you're using Flutter's built-in `AppLocalizations` and want quick access to variable-based translations, you can add this extension to your project:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+extension AppLocalizationExtension on BuildContext {
+  AppLocalizations get loc => AppLocalizations.of(this)!;
+}
+```
+
+This allows you to access your standard localizations easily:
+
+```dart
+Text(context.loc.welcomeMessage);
+```
+
+---
+
 ## Why Use This Package?
 
-When working with localization in Flutter, it can be cumbersome to use translation keys directly to fetch translations. This package solves that problem by:
+When working with localization in Flutter, it can be cumbersome to manage dynamic translations with variable replacements. This package solves that problem by:
 
-1. Providing a project-agnostic way to integrate your localization logic with full type safety.
-2. Adding an extension to make accessing localization values simpler with autocomplete support.
+1. Providing a simple way to manage custom translations with variable support.
+2. Adding an extension to make accessing translations easier with `context.translate()`.
 3. Supporting custom localization for dynamic translations.
-4. Using generics to ensure type safety and IDE autocomplete for all your translation keys.
+4. Providing fallback support to prevent crashes when keys are missing.
 
 ---
 
 ## Limitations
 
 - **No Advanced Formatting**: Currently, the custom localization only supports simple variable replacements. Plurals, dates, and other advanced formatting are not yet supported.
-- **Manual Setup**: You need to manually set the `LocalizationProvider` and supported locales in your app.
+- **Manual Setup**: You need to manually set the supported locales and add the delegate in your app.
 
 
