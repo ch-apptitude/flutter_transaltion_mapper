@@ -5,12 +5,11 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_translation_mapper/app_localization_provider.dart';
 
 class CustomLocalization {
-  final Locale _locale;
   final Map<String, String> _entries;
   static final CustomLocalizationDelegate delegate =
       CustomLocalizationDelegate();
 
-  CustomLocalization(this._locale, this._entries);
+  CustomLocalization(this._entries);
 
   static CustomLocalization? of(BuildContext context) {
     return Localizations.of<CustomLocalization>(context, CustomLocalization);
@@ -40,6 +39,8 @@ class CustomLocalization {
 
 class CustomLocalizationDelegate
     extends LocalizationsDelegate<CustomLocalization> {
+  String filePrefix = 'app_';
+
   @override
   bool isSupported(Locale locale) =>
       TranslationMapper.supportedLocales.contains(locale);
@@ -56,7 +57,7 @@ class CustomLocalizationDelegate
         name: 'CustomLocalization',
       );
 
-      String json = await rootBundle.loadString("lib/l10n/app_$language.arb");
+      String json = await rootBundle.loadString("lib/l10n/$filePrefix$language.arb");
 
       Map<String, dynamic> decoded;
       try {
@@ -96,7 +97,7 @@ class CustomLocalizationDelegate
         name: 'CustomLocalization',
       );
 
-      return CustomLocalization(locale, entries);
+      return CustomLocalization(entries);
     } catch (e, stackTrace) {
       developer.log(
         'Failed to load custom localization for locale ${locale.languageCode}',
@@ -110,7 +111,7 @@ class CustomLocalizationDelegate
         'Returning empty localization as fallback',
         name: 'CustomLocalization',
       );
-      return CustomLocalization(locale, {});
+      return CustomLocalization({});
     }
   }
 }
