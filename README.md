@@ -87,6 +87,28 @@ Each file should contain key-value pairs for translations:
 }
 ```
 
+#### Customizing the File Prefix
+
+By default, the package looks for translation files with the `app_` prefix (e.g., `app_en.arb`, `app_es.arb`). You can customize this prefix to match your project's naming convention:
+
+```dart
+void main() {
+  TranslationMapper.setSupportedLocales([
+    Locale('en'),
+    Locale('es'),
+  ]);
+
+  // Customize the file prefix (default is 'app_')
+  CustomLocalization.delegate.filePrefix = 'translations_';
+
+  runApp(MyApp());
+}
+```
+
+With the custom prefix `translations_`, the package will load:
+- `lib/l10n/translations_en.arb`
+- `lib/l10n/translations_es.arb`
+
 ---
 
 ### 5. Access Translations in Your App
