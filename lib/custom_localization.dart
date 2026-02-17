@@ -8,6 +8,10 @@ class CustomLocalization {
   final Map<String, String> _entries;
   static final CustomLocalizationDelegate delegate =
       CustomLocalizationDelegate();
+  
+  /// Optional callback to fetch translations from external sources (e.g., Lokalise)
+  /// Should return the translation for the given key, or null if not found
+  static String? Function(String key)? externalTranslationProvider;
 
   CustomLocalization(this._entries);
 
@@ -16,7 +20,22 @@ class CustomLocalization {
   }
 
   String get(String key, {Map<String, dynamic>? params}) {
-    String? translation = _entries[key];
+    // First try external provider (e.g., Lokalise OTA updates)
+    String? translation;
+    if (externalTranslationProvider != null) {
+      try {
+        translation = externalTranslationProvider!(key);
+      } catch (e) {
+        developer.log(
+          'External translation provider failed for key "$key"',
+          name: 'CustomLocalization',
+          error: e,
+        );
+      }
+    }
+    
+    // Fall back to bundled .arb translations
+    translation ??= _entries[key];
 
     if (translation == null) {
       return "??:$key";
