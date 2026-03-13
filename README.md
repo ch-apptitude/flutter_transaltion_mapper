@@ -87,6 +87,13 @@ Each file should contain key-value pairs for translations:
 }
 ```
 
+Add assets in  the pubspec.yaml
+
+```dart
+assets:
+     - lib/l10n/
+```
+
 #### Customizing the File Prefix
 
 By default, the package looks for translation files with the `app_` prefix (e.g., `app_en.arb`, `app_es.arb`). You can customize this prefix to match your project's naming convention:
