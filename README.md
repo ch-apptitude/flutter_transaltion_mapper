@@ -21,7 +21,7 @@ Add the package to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  flutter_translation_mapper: ^1.0.0
+  flutter_translation_mapper: ^0.1.0
 ```
 
 Run `flutter pub get` to fetch the package.
