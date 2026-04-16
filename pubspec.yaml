@@ -4,7 +4,6 @@ version: 0.1.0
 homepage: https://github.com/ch-apptitude/flutter_translation_mapper
 repository: https://github.com/ch-apptitude/flutter_translation_mapper
 issue_tracker: https://github.com/ch-apptitude/flutter_translation_mapper/issues
-publisher: apptitude.ch
 
 environment:
   sdk: ^3.8.1
